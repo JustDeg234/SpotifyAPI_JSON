@@ -7,9 +7,9 @@ from spotipy.oauth2 import SpotifyOAuth
 #'sp' spotify client object to talk to spotify. Pass in auth_manager which is the OAuth handler
 
 sp = spotipy.Spotify(auth_manager = SpotifyOAuth(
-    client_id = "9b5c907d90f84fbca76fb1a980632ebf",
-    client_secret = "06f4b7796151482883571159ede05bbe",
-    redirect_uri = "https://diegodavalos.dev/",
+    client_id = "",
+    client_secret = "",
+    redirect_uri = "https://./",
     scope = "user-library-read"
 ))
 
@@ -20,7 +20,7 @@ loop = True
 
 while loop:
     #executes a GET request to the Spotify API endpoint
-    results = sp.current_user_saved_tracks()
+    results = sp.current_user_saved_tracks(limit=limit, offset=offset)
 
     items = results['items'] #expands prev shortcut in for loop for loop check
 
@@ -39,11 +39,9 @@ while loop:
             "duration_ms": track['duration_ms'],
             "popularity": track['popularity']
         })
+        
     offset += limit #crucial: moves on to the next 50 entries
 import json
 
 print(json.dumps(songs, indent=4))
         
-
-
-
