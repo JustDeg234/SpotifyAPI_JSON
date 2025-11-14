@@ -6,7 +6,7 @@ from spotipy.oauth2 import SpotifyOAuth
 
 #'sp' spotify client object to talk to spotify. Pass in auth_manager which is the OAuth handler
 
-sp = spotipy.Spotipy(auth_manager = SpotifyOAuth(
+sp = spotipy.Spotify(auth_manager = SpotifyOAuth(
     client_id = "",
     client_secret = "",
     redirect_uri = "",
@@ -33,3 +33,4 @@ import json
 
 print(json.dumps(songs, indent=4))
         
+
