@@ -7,30 +7,43 @@ from spotipy.oauth2 import SpotifyOAuth
 #'sp' spotify client object to talk to spotify. Pass in auth_manager which is the OAuth handler
 
 sp = spotipy.Spotify(auth_manager = SpotifyOAuth(
-    client_id = "",
-    client_secret = "",
-    redirect_uri = "",
+    client_id = "9b5c907d90f84fbca76fb1a980632ebf",
+    client_secret = "06f4b7796151482883571159ede05bbe",
+    redirect_uri = "https://diegodavalos.dev/",
     scope = "user-library-read"
 ))
 
-#executes a GET request to the Spotify API endpoint
-results = sp.current_user_saved_tracks()
+songs = [] #holds post-filtered metadeta, dict for max scraping
+limit = 50 #Spotify limit
+offset = 0 #tracks depth of library scraped
+loop = True
 
-songs = [] #holds post-filtered metadeta
+while loop:
+    #executes a GET request to the Spotify API endpoint
+    results = sp.current_user_saved_tracks()
 
-for item in results['items']: #each item is a dict containing a track's info
-    track = item['track']
-    songs.append({
-        "name": track['name'],
-        "artist": track['artists'][0]['name'],
-        "id": track['id'],
-        "album": track['album']['name'],
-        "release_date": track['album']['release_date'],
-        "duration_ms": track['duration_ms'],
-        "popularity": track['popularity']
-    })
+    items = results['items'] #expands prev shortcut in for loop for loop check
+
+    if not items:
+        loop = False #if no more items, end loop
+        break
+
+    for item in results['items']: #each item is a dict containing a track's info
+        track = item['track']
+        songs.append({
+            "name": track['name'],
+            "artist": track['artists'][0]['name'],
+            "id": track['id'],
+            "album": track['album']['name'],
+            "release_date": track['album']['release_date'],
+            "duration_ms": track['duration_ms'],
+            "popularity": track['popularity']
+        })
+    offset += limit #crucial: moves on to the next 50 entries
 import json
 
 print(json.dumps(songs, indent=4))
         
+
+
 
